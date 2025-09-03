@@ -1,45 +1,12 @@
 import { test, expect, Page, Locator } from '@playwright/test';
-
-interface Elements {
-  locator: (page: Page) => Locator;
-  name: String;
-  text: String;
-}
-
-const elements: Elements[] = [
-  {
-    locator: (page: Page): Locator => page.locator('[id="12"]'),
-    name: 'Travel',
-    text: 'Travel',
-  },
-  {
-    locator: (page: Page): Locator => page.locator('[id="18"]'),
-    name: 'Explore',
-    text: 'Explore',
-  },
-  {
-    locator: (page: Page): Locator => page.locator('[id="7"]'),
-    name: 'Flights',
-    text: 'Flights',
-  },
-  {
-    locator: (page: Page): Locator => page.locator('[id="8"]'),
-    name: 'Hotels',
-    text: 'Hotels',
-  },
-  {
-    locator: (page: Page): Locator => page.locator('[id="14"]'),
-    name: 'Vacation rentals',
-    text: 'Vacation rentals',
-  },
-];
+import { MainPage } from '../models/MainPage';
 
 const lightMode = ['light', 'dark'];
 
 test.describe('Первые тесты', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('https://www.google.com/travel/flights?ucbcb=1');
-  });
+  //  test.beforeEach(async ({ page }) => {
+  //await page.goto('https://www.google.com/travel/flights?ucbcb=1');
+  //});
 
   test('Открытие Goggle flight', async ({ page }) => {
     //await page.goto('https://www.google.com/travel/flights?ucbcb=1');
@@ -60,16 +27,16 @@ test.describe('Первые тесты', () => {
     await expect(page.locator('body')).toHaveAttribute('data-theme', 'light');
   });
 
-  test('Проверка ссылок на сервисы', async ({ page }) => {
-    elements.forEach(({ locator, name, text }) => {
-      test.step(`Check visibility ${name}`, async () => {
-        await expect(locator(page)).toBeVisible();
-      });
+  test('Проверка отображения элементов навигации', async ({ page }) => {
+    const mainPage = new MainPage(page);
+    await mainPage.openMainPage();
+    await mainPage.checkElementsVisability();
+  });
 
-      test.step(`Check name ${name}`, async () => {
-        await expect(locator(page)).toContainText(`${text}`);
-      });
-    });
+  test('Проверка отображения элементов по названию', async ({ page }) => {
+    const mainPage = new MainPage(page);
+    await mainPage.openMainPage();
+    await mainPage.checkElementsName();
   });
 
   lightMode.forEach((value) => {
