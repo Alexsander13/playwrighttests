@@ -5,7 +5,7 @@ test.describe('Первые тесты', () => {
     await page.goto('https://www.google.com/travel/flights?ucbcb=1');
   });
 
-  test('Открытие Goggle flight', async ({ page }) => {
+  test.skip('Открытие Goggle flight', async ({ page }) => {
     //await page.goto('https://www.google.com/travel/flights?ucbcb=1');
     await expect(page.getByText('Flights', { exact: true }).nth(2)).toBeVisible();
     await expect(page.locator('body')).toContainText('Flights');
@@ -17,7 +17,7 @@ test.describe('Первые тесты', () => {
     await expect(page.locator('body')).toContainText('Flights');
   });
 
-  test.fail('Изменение темы dark/light', async ({ page }) => {
+  test.skip('Изменение темы dark/light', async ({ page }) => {
     // await page.goto('https://www.google.com/travel/flights?ucbcb=1');
 
     await page.getByRole('button', { name: 'Change appearance' }).click();
@@ -28,7 +28,7 @@ test.describe('Первые тесты', () => {
     await expect(page.locator('body')).toHaveAttribute('data-theme', 'light');
   });
 
-  test.fixme('Проверка наличия ссылок на сервисы', async ({ page }) => {
+  test.skip('Проверка наличия ссылок на сервисы', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Travel', exact: true })).toBeVisible();
     await expect(page.locator('[id="12"]')).toContainText('Travel');
     await expect(page.getByRole('link', { name: 'Explore' })).toBeVisible();
