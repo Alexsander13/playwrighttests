@@ -34,6 +34,8 @@ const elements: Elements[] = [
   },
 ];
 
+const lightMode = ['light', 'dark'];
+
 test.describe('Первые тесты', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('https://www.google.com/travel/flights?ucbcb=1');
@@ -67,6 +69,24 @@ test.describe('Первые тесты', () => {
       test.step(`Check name ${name}`, async () => {
         await expect(locator(page)).toContainText(`${text}`);
       });
+    });
+  });
+
+  lightMode.forEach((value) => {
+    test(`Проверка стилей активного ${value} мода`, async ({ page }) => {
+      await page.evaluate((value) => {
+        document.querySelector('body')?.setAttribute('data-theme', value);
+      }, value);
+      await expect(
+        page
+          .getByLabel('Flight', { exact: true })
+          .locator('div')
+          .filter({
+            hasText:
+              'Round tripRound tripOne wayMulti-city1AdultsRemove adult1Add adultChildren Aged',
+          })
+          .first(),
+      ).toHaveScreenshot(`pageWith${value}Mode.png`);
     });
   });
 });
